@@ -4,6 +4,7 @@ import de.epicviewer.model.EVModel;
 import de.epicviewer.view.EVView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  *
@@ -29,9 +30,33 @@ public class EVController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
-        if(actionCommand == "new") {
+        
+        if("new".equals(actionCommand)) {                   // new Command
             model.createRandomImage();
             view.setImage(model.getImage());
+        } 
+        else if ("open".equals(actionCommand))              // open Command
+        {
+            File file = view.getFile(true);
+            if (file != null) {
+                try {
+                    model.loadImage(file);
+                    view.setImage(model.getImage());
+                } catch (Exception ex) { 
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } 
+        else if ("save".equals(actionCommand))              // save Command
+        {
+            File file = view.getFile(false);
+            if (file != null) {
+                try {
+                    model.saveImage(file);
+                } catch (Exception ex) {
+                    System.out.println("couldn't save file: " + ex.getMessage());
+                }
+            }
         }
     }
 }

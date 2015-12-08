@@ -2,7 +2,9 @@ package de.epicviewer.view;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -27,9 +29,23 @@ public class EVView extends JFrame {
     }
     
     public void setImage(ImageIcon image) {
-        imageLabel = new JLabel(image);
-        panel.add(imageLabel);
+        imageLabel.setIcon(image);
         repaint();
+    }
+    
+    public File getFile(boolean forOpen) {
+        JFileChooser fc = new JFileChooser();
+        
+        if (forOpen) {
+            if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                return fc.getSelectedFile();
+            }
+        } else {
+            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                return fc.getSelectedFile();
+            }
+        }
+        return null;
     }
     
     private void initGUI() {
@@ -39,6 +55,9 @@ public class EVView extends JFrame {
         
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(400, 300));
+        
+        imageLabel = new JLabel();
+        panel.add(imageLabel);
         
         add(panel);
         pack();
@@ -54,7 +73,7 @@ public class EVView extends JFrame {
         newItem.addActionListener(listener);
         fileMenu.add(newItem);
         
-        JMenuItem loadItem = new JMenuItem("load");
+        JMenuItem loadItem = new JMenuItem("open");
         loadItem.addActionListener(listener);
         fileMenu.add(loadItem);
         

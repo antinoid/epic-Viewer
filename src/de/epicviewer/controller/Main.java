@@ -1,7 +1,5 @@
 package de.epicviewer.controller;
 
-import de.epicviewer.model.EVModel;
-import de.epicviewer.view.EVView;
 import java.awt.EventQueue;
 
 /**
